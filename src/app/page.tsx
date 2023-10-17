@@ -165,5 +165,11 @@ export default function Home() {
 			],
 		},
 	};
-	return <></>;
+	return (
+		<div>
+			<div>Feed</div>
+			<div>Charts</div>
+			<div>Summary of data</div>
+		</div>
+	);
 }
