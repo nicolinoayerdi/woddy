@@ -1,7 +1,6 @@
-import Image from 'next/image';
-import { Wod } from './components/Wod';
+import { Wod } from '../../../../components/Wod';
 
-export default function Home() {
+export default function Routine() {
 	const wod = {
 		dayOfWeek: 'Monday',
 		exercises: {
@@ -167,10 +166,8 @@ export default function Home() {
 	};
 	return (
 		<>
-			<h1>Home</h1>
-			<div>Current routine</div>
-			<div>Wod</div>
-			<div>Charts</div>
+			<h1 className=''>Wod</h1>
+			<Wod {...wod}></Wod>
 		</>
 	);
 }

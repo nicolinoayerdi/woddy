@@ -130,7 +130,7 @@ const wod0: Wod = {
 			id: 6,
 			title: 'Press inclinado',
 			muscle: 'Pecho',
-			type: 'push',
+			type: 'Push',
 			block: 3,
 			amountOfSets: 5,
 			sets: [
@@ -143,7 +143,7 @@ const wod0: Wod = {
 			id: 7,
 			title: 'Estocadas laterales',
 			muscle: 'Piernas',
-			type: 'push',
+			type: 'Push',
 			block: 3,
 			amountOfSets: 5,
 			sets: [
@@ -156,7 +156,7 @@ const wod0: Wod = {
 			id: 8,
 			title: 'Aperturas',
 			muscle: 'Pecho',
-			type: 'push',
+			type: 'Push',
 			block: 4,
 			amountOfSets: 5,
 			sets: [
@@ -169,7 +169,7 @@ const wod0: Wod = {
 			id: 9,
 			title: 'Bulgaras',
 			muscle: 'Piernas',
-			type: 'push',
+			type: 'Push',
 			block: 4,
 			amountOfSets: 5,
 			sets: [
@@ -313,7 +313,12 @@ const wod2: Wod = {
 	],
 };
 
-const routine: Routine = {
+export const routine: Routine = {
 	wods: [wod0, wod1, wod2],
 	validUntil: new Date(),
 };
+
+/* Object.keys(groupedExercises).forEach(key => {
+		const exs = groupedExercises[key];
+		exs.forEach(ex => console.log(ex.title, key));
+	}); */
