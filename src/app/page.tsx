@@ -165,12 +165,5 @@ export default function Home() {
 			],
 		},
 	};
-	return (
-		<>
-			<h1>Home</h1>
-			<div>Current routine</div>
-			<div>Wod</div>
-			<div>Charts</div>
-		</>
-	);
+	return <></>;
 }

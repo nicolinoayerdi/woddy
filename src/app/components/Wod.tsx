@@ -20,7 +20,6 @@ export interface WodProps {
 export const Wod = ({ dayOfWeek, exercises }: WodProps) => {
 	return (
 		<>
-			<div>{dayOfWeek}</div>
 			{Object.keys(exercises).map(blockNumber => (
 				<ExerciseBlockCard
 					key={blockNumber}

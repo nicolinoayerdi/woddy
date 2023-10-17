@@ -1,6 +1,6 @@
 import { Wod } from '../../../../components/Wod';
 
-export default function Routine() {
+export default function WodPage() {
 	const wod = {
 		dayOfWeek: 'Monday',
 		exercises: {
@@ -166,7 +166,7 @@ export default function Routine() {
 	};
 	return (
 		<>
-			<h1 className=''>Wod</h1>
+			<div className='text-center py-4 text-4xl font-bold'>{wod.dayOfWeek} wod</div>
 			<Wod {...wod}></Wod>
 		</>
 	);
