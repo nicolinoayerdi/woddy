@@ -1,6 +1,8 @@
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 import './globals.css';
+import logo from 'public/woddy.svg';
+import Image from 'next/image';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -17,11 +19,14 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 		<html lang='en'>
 			<body className={`${inter.className} flex flex-col items-center bg-slate-100`}>
 				<div className='px-8 bg-gray-100 shadow-lg fixed top-0 left-0 right-0 z-10'>
-					<nav className='my-3 flex justify-end items-center gap-4'>
-						<a href='/'>Home</a>
-						<a href={`/routine/${currentRoutine}`}>Current routine</a>
-						<a href={`/routine/${currentRoutine}/wod/${dayOfWeek}`}>Wod</a>
-						<a href='/charts'>Charts</a>
+					<nav className='my-3 flex justify-between '>
+						<Image src={logo} alt='woddy-logo'></Image>
+						<div className='flex justify-end items-center gap-4'>
+							<a href='/'>Home</a>
+							<a href={`/routine/${currentRoutine}`}>Current routine</a>
+							<a href={`/routine/${currentRoutine}/wod/${dayOfWeek}`}>Wod</a>
+							<a href='/charts'>Charts</a>
+						</div>
 					</nav>
 				</div>
 				<div className='mt-16'>{children}</div>

@@ -1,11 +1,17 @@
 interface ExerciseSet {
-	setNumber: number;
+	setNumber?: number;
 	previous?: number;
 	weight?: number;
 	repetitions?: number;
 }
 
-export const Exercise = ({ exercise }) => {
+interface Exercise {
+	title: String;
+	sets: Array<{ previous?: number; weight?: number; repetitions?: number }>;
+	amountOfSets: number;
+}
+
+export const Exercise = ({ exercise }: { exercise: Exercise }) => {
 	const columns = [
 		{ title: 'Set', value: (row: ExerciseSet) => row.setNumber },
 		{ title: 'Previous', value: (row: ExerciseSet) => row.previous || ' - ' },
@@ -13,7 +19,7 @@ export const Exercise = ({ exercise }) => {
 		{ title: 'Reps', value: (row: ExerciseSet) => row.repetitions },
 	];
 
-	const { id, title, muscle, type, sets: exSets, amountOfSets } = exercise;
+	const { title, sets: exSets, amountOfSets } = exercise;
 
 	const sets: Array<ExerciseSet> = (
 		amountOfSets ? Array.from({ length: amountOfSets }).map(_ => ({ repetitions: exSets[0].repetitions })) : exSets
