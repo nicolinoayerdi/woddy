@@ -9,7 +9,7 @@ export default async function RoutinesPage() {
 	return (
 		<div className='flex flex-col'>
 			{routines?.map(routine => (
-				<Link key={routine._id.toString()} href={`routine/${routine._id}`}>
+				<Link key={routine._id.toString()} href={`routines/${routine._id}`}>
 					{dayjs(routine.initialDate).format('DD/MM/YYYY')} - {dayjs(routine.validUntil).format('DD/MM/YYYY')}
 				</Link>
 			))}

@@ -22,7 +22,7 @@ export const WodSummary = ({ dayOfWeek, avgDuration, blocks, exercises, tags }: 
 		<div className='mt-4'>
 			<ul>
 				<div className='flex flex-row gap-1'>
-					{tags.map((tag, index) => (
+					{tags?.map((tag, index) => (
 						<Tag key={index}>{tag}</Tag>
 					))}
 				</div>
