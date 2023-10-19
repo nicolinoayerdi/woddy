@@ -21,10 +21,7 @@ export async function fetchCurrentRoutine() {
 
 		const routines = await db
 			.collection('routines')
-			.find({ $and: [{ initialDate: { $lte: today } }, { validUntil: { $gte: today } }] })
-			.sort({ validUntil: -1 })
-			.limit(10)
-			.toArray();
+			.findOne({ $and: [{ initialDate: { $lte: today } }, { validUntil: { $gte: today } }] });
 		return routines;
 	} catch (e) {
 		console.error(e);
