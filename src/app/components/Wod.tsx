@@ -1,30 +1,21 @@
-/**
- * const groupedExercises = exercises.reduce((result, exercise) => {
-		const { block } = exercise;
-		(result[block] || (result[block] = [])).push(exercise);
-		return result;
-	}, {});
- */
-
 import { ExerciseBlockCard } from './ExerciseBlockCard';
 
-interface GroupedExercises {
-	[blockNumber: string]: any[];
+interface Blocks {
+	[blockName: string]: any[];
 }
 
 export interface WodProps {
-	dayOfWeek: String;
-	exercises: GroupedExercises;
+	blocks: Blocks;
 }
 
-export const Wod = ({ dayOfWeek, exercises }: WodProps) => {
+export const Wod = ({ blocks }: WodProps) => {
 	return (
 		<>
-			{Object.keys(exercises).map((blockNumber: string) => (
+			{Object.keys(blocks).map((blockName: string) => (
 				<ExerciseBlockCard
-					key={blockNumber}
-					blockNumber={Number(blockNumber)}
-					exercises={exercises[blockNumber]}></ExerciseBlockCard>
+					key={blockName}
+					blockName={blockName}
+					exercises={blocks[blockName]}></ExerciseBlockCard>
 			))}
 		</>
 	);
