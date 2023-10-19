@@ -1,44 +1,23 @@
+import { fetchCurrentRoutine, fetchRoutine, fetchRoutines } from '@/app/api/routines/routines';
 import { WodSummary } from '@/app/components/WodSummary';
 import dayjs from 'dayjs';
 import Link from 'next/link';
 
-export default function RoutinePage() {
-	const routine = {
-		id: 1,
-		wods: [
-			{
-				dayOfWeek: 1,
-				blocks: 5,
-				exercises: 10,
-				avgDuration: 90,
-				tags: ['chest', 'legs', 'push', 'core'],
-			},
-			{
-				dayOfWeek: 3,
-				blocks: 4,
-				exercises: 12,
-				avgDuration: 90,
-				tags: ['back', 'legs', 'biceps', 'push'],
-			},
-			{
-				dayOfWeek: 5,
-				blocks: 5,
-				exercises: 10,
-				avgDuration: 60,
-				tags: ['shoulders', 'triceps', 'biceps'],
-			},
-		],
-		validUntil: new Date('2023/10/19'),
-	};
+export default async function RoutinePage({ params }: { params: { routineId: string } }) {
+	const { routineId } = params;
 
-	const expired = dayjs(routine.validUntil).isBefore(dayjs());
+	const routine = await fetchRoutine(routineId);
+
+	if (!routine) return <div>Invalid routine</div>;
 
 	return (
 		<>
 			<div className='text-center py-4 text-4xl font-bold'>
 				Routine
 				<div className='text-sm font-extralight'>
-					{expired ? 'Expired' : `Valid until ${dayjs(routine.validUntil).format('DD/MM/YYYY')}`}
+					{dayjs(routine.validUntil).isBefore(dayjs())
+						? 'Expired'
+						: `Valid until ${dayjs(routine.validUntil).format('DD/MM/YYYY')}`}
 				</div>
 			</div>
 
