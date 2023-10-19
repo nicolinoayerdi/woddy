@@ -22,7 +22,7 @@ export default async function RoutinePage({ params }: { params: { routineId: str
 			</div>
 
 			<div className='flex flex-col gap-6'>
-				{routine.wods.map(wod => (
+				{routine.wods.map((wod: any) => (
 					<Link key={wod.dayOfWeek} href={`/routine/${routine.id}/wod/${wod.dayOfWeek}`}>
 						<WodSummary {...wod}></WodSummary>
 					</Link>

@@ -4,7 +4,6 @@ import dayjs from 'dayjs';
 
 export default async function RoutinesPage() {
 	const routines = await fetchRoutines();
-	console.log({ routines });
 
 	return (
 		<div className='flex flex-col'>
