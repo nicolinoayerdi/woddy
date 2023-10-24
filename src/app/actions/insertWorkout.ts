@@ -26,16 +26,13 @@ interface WorkoutDto {
 	};
 }
 
-export async function updateWorkout(
-	routineId: string,
-	workoutId: number,
-	blockKey: string,
-	prevState: any,
-	formData: FormData
-) {
+export async function updateWorkout(routineId: string, workoutId: number, formData: FormData) {
 	let w: WorkoutDto | null | undefined = await fetchWorkout({ routineId, dayOfWeek: workoutId });
 
 	if (w) {
+		const blocks = Object.assign({}, w.blocks); // deep copy
+		const previous = { blocks, workoutId: w.id };
+
 		Object.keys(w.blocks).forEach(b => {
 			const exercises = w?.blocks[b];
 			exercises?.forEach(e => {
@@ -50,20 +47,15 @@ export async function updateWorkout(
 			});
 		});
 
-		console.log({ newW: JSON.stringify(w.blocks) });
+		console.log(JSON.stringify(w));
+		try {
+			await editWorkout({ routineId, workoutId, workout: w, previous });
+			revalidatePath('/');
+			return { message: 'updated workout ' };
+		} catch (e) {
+			return { message: 'failed to update workout' };
+		}
 	}
-
-	/* formData.forEach((value, key) => {
-		const [exerciseId, attribute] = key.split('.');
-		console.log(exerciseId, attribute, value);
-	}); */
-
-	// Now, structuredData contains the structured form data
-	//console.log(structuredData);
-
-	//console.log({ newWeights, newReps });
-
-	//const newSets = newWeights.map((w, index) => ({ order: index + 1, weight: w, repetitions: newReps[index] }));
 
 	/* if (w) {
 		const { blocks } = w;
@@ -73,13 +65,7 @@ export async function updateWorkout(
 
 		const newW = { ...blocks, [blockKey]: [{ ...blockToEdit, sets: newSets } ]};
 
-		try {
-			await editWorkout({ routineId, workoutId, newBlocks: newW });
-			revalidatePath('/');
-			return { message: 'updated workout ' };
-		} catch (e) {
-			return { message: 'failed to update workout' };
-		}
+		
 	} */
 	return { message: 'failed to update workout' };
 }

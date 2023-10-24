@@ -1,24 +1,6 @@
 'use client';
-
-// @ts-expect-error
-import { experimental_useFormState as useFormState, experimental_useFormStatus as useFormStatus } from 'react-dom';
-import { updateWorkout } from '../actions/insertWorkout';
-import { SyntheticEvent, useEffect, useState } from 'react';
-import { debounce } from 'lodash';
-
-interface ExerciseSet {
-	previous?: number;
-	order?: number;
-	weight?: number;
-	repetitions?: number;
-}
-
-interface Exercise {
-	id: string;
-	title: String;
-	sets: Array<{ order: number; previous?: number; weight?: number; repetitions?: number }>;
-	amountOfSets: number;
-}
+import { useState } from 'react';
+import { IExercise, IExerciseSet } from './types';
 
 const Cell = ({ children }: any) => <td className='text-center w-1/4 md:leading-6'>{children}</td>;
 
@@ -38,15 +20,15 @@ const Input = ({ children, name, value, onChange, disabled }: any) =>
 		/>
 	);
 
-export const Exercise = ({ exercise, onChangeCell }: { exercise: Exercise; onChangeCell: any }) => {
+export const Exercise = ({ exercise }: { exercise: IExercise }) => {
 	const columns = [
-		{ title: 'set', value: (row: ExerciseSet) => row.order },
-		{ title: 'prev', value: (row: ExerciseSet) => row.previous || ' - ' },
+		{ title: 'set', value: (row: IExerciseSet) => row.order },
+		{ title: 'prev', value: (row: IExerciseSet) => row.previous || ' - ' },
 		{
 			title: 'kg',
 			key: 'weight',
-			value: (row: ExerciseSet) => row.weight,
-			onChange: (prevRowValue: ExerciseSet, newFieldValue: string) => ({
+			value: (row: IExerciseSet) => row.weight,
+			onChange: (prevRowValue: IExerciseSet, newFieldValue: string) => ({
 				...prevRowValue,
 				weight: newFieldValue ? Number(newFieldValue) : undefined,
 			}),
@@ -54,8 +36,8 @@ export const Exercise = ({ exercise, onChangeCell }: { exercise: Exercise; onCha
 		{
 			title: 'reps',
 			key: 'repetitions',
-			value: (row: ExerciseSet) => row.repetitions,
-			onChange: (prevRowValue: ExerciseSet, newFieldValue: string) => ({
+			value: (row: IExerciseSet) => row.repetitions,
+			onChange: (prevRowValue: IExerciseSet, newFieldValue: string) => ({
 				...prevRowValue,
 				repetitions: newFieldValue ? Number(newFieldValue) : undefined,
 			}),
@@ -64,25 +46,23 @@ export const Exercise = ({ exercise, onChangeCell }: { exercise: Exercise; onCha
 
 	const { title, sets: exSets, amountOfSets } = exercise;
 
-	const sets: Array<ExerciseSet> = amountOfSets
+	const initialSets: Array<IExerciseSet> = amountOfSets
 		? Array.from({ length: amountOfSets }).map((_, index) => ({
 				repetitions: exSets[0].repetitions,
 				order: index + 1,
 		  }))
 		: exSets;
 
-	//const [sets, setSets] = useState(initialSets);
+	const [sets, setSets] = useState(initialSets);
 
-	/* const onChangeCell =
-		(index: number, buildNewSet?: (prevRowValue: ExerciseSet, newFieldValue: string) => ExerciseSet) =>
+	const onChangeCell =
+		(index: number, buildNewSet?: (prevRowValue: IExerciseSet, newFieldValue: string) => IExerciseSet) =>
 		(e: React.ChangeEvent<HTMLInputElement>) =>
 			setSets(prevSets =>
 				prevSets.map((s, i) => {
 					return i === index && buildNewSet ? buildNewSet(s, e.target.value) : s;
 				})
-			); */
-
-	//const { pending } = useFormStatus();
+			);
 
 	return (
 		<div className='mb-4'>
@@ -100,7 +80,7 @@ export const Exercise = ({ exercise, onChangeCell }: { exercise: Exercise; onCha
 				</thead>
 				<tbody>
 					<div className='flex flex-col gap-2'>
-						{sets.map((set: ExerciseSet, index: number) => {
+						{sets.map((set: IExerciseSet, index: number) => {
 							const [setCol, prevCol, weightCol, repsCol] = columns;
 							return (
 								<tr key={index} className='flex flex-row gap-2'>
@@ -114,13 +94,13 @@ export const Exercise = ({ exercise, onChangeCell }: { exercise: Exercise; onCha
 										<Input
 											name={`${exercise.id.toLowerCase()}.${weightCol.key}`}
 											value={weightCol.value(set)}
-											onChange={() => onChangeCell(index, weightCol.onChange)}></Input>
+											onChange={onChangeCell(index, weightCol.onChange)}></Input>
 									</Cell>
 									<Cell>
 										<Input
 											name={`${exercise.id.toLowerCase()}.${repsCol.key}`}
 											value={repsCol.value(set)}
-											onChange={() => onChangeCell(index, repsCol.onChange)}></Input>
+											onChange={onChangeCell(index, repsCol.onChange)}></Input>
 									</Cell>
 								</tr>
 							);
@@ -131,22 +111,3 @@ export const Exercise = ({ exercise, onChangeCell }: { exercise: Exercise; onCha
 		</div>
 	);
 };
-
-/**
- * <tr key={index} className='flex flex-row'>
-	{columns.map(col => (
-		<td className='text-center w-1/4 md:leading-6' key={`${index}-${col.title}`}>
-			{col.value(set) && (
-				<input
-					type='number'
-					id={`${col.title}-${set.order}`}
-					name={`${col.title}-${set.order}`}
-					className='remove-arrow w-14 text-center bg-slate-200 leading-6 font-normal rounded-lg px-4 py-0.5'
-					value={col.value(set)}
-					onChange={e => {}}
-				/>
-			)}
-		</td>
-	))}
-</tr>
- */

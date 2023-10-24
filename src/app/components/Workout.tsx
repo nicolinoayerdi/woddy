@@ -11,6 +11,8 @@ interface Blocks {
 
 export interface WodProps {
 	blocks: Blocks;
+	routineId: string;
+	dayOfWeek: number;
 }
 
 const ExerciseBlockCard = ({ blockName, exercises }: { blockName: string; exercises: Array<any> }) => {
@@ -18,23 +20,22 @@ const ExerciseBlockCard = ({ blockName, exercises }: { blockName: string; exerci
 		<div className='bg-white rounded-lg p-4 shadow-md mb-4'>
 			<h3 className='text-xl font-semibold mb-4'>{blockName}</h3>
 			{exercises.map((exercise, index) => (
-				<Exercise key={index} exercise={exercise} onChangeCell={() => console.log('onchange cell')}></Exercise>
+				<Exercise key={index} exercise={exercise}></Exercise>
 			))}
 		</div>
 	);
 };
 
-export const Wod = ({ blocks }: WodProps) => {
+export const Wod = ({ routineId, dayOfWeek, blocks }: WodProps) => {
 	const [state, formAction] = useFormState(
-		(prevState: any, formData: FormData) =>
-			updateWorkout('6530405b93c84c6501e40dc0', 1, 'block1', prevState, formData),
+		(prevState: any, formData: FormData) => updateWorkout(routineId, dayOfWeek, formData),
 		{ message: null }
 	);
 
 	const { pending } = useFormStatus();
 
 	return (
-		<>
+		<div className='py-4'>
 			<form action={formAction}>
 				{Object.keys(blocks).map((blockName: string) => (
 					<ExerciseBlockCard
@@ -42,10 +43,11 @@ export const Wod = ({ blocks }: WodProps) => {
 						blockName={blockName}
 						exercises={blocks[blockName]}></ExerciseBlockCard>
 				))}
-				<button className='bg-cyan-500 text-white rounded-md' type='submit' aria-disabled={pending}>
+				<div>{state.message}</div>
+				<button className='bg-cyan-500 text-white rounded-md w-[100%]' type='submit' aria-disabled={pending}>
 					Submit
 				</button>
 			</form>
-		</>
+		</div>
 	);
 };
