@@ -1,5 +1,5 @@
 import { fetchWorkout } from '@/app/api/workouts/workouts';
-import { Wod } from '../../../../components/Wod';
+import { Wod } from '../../../../components/Workout';
 import dayjs from 'dayjs';
 
 /* const wod = {

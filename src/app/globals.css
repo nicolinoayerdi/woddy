@@ -2,6 +2,16 @@
 @tailwind components;
 @tailwind utilities;
 
+.remove-arrow::-webkit-inner-spin-button, 
+.remove-arrow::-webkit-outer-spin-button { 
+    -webkit-appearance: none; 
+    margin: 0; 
+} 
+
+.remove-arrow { 
+    -moz-appearance: textfield; 
+} 
+
 /* :root {
   --foreground-rgb: 0, 0, 0;
   --background-start-rgb: 214, 219, 220;
