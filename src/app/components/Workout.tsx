@@ -11,14 +11,6 @@ export interface WodProps {
 	dayOfWeek: number;
 }
 
-const ExerciseCard = ({ exercise }: { exercise: any }) => {
-	return (
-		<div className='bg-white rounded-lg p-4 shadow-md mb-4'>
-			<Exercise exercise={exercise}></Exercise>
-		</div>
-	);
-};
-
 export const Wod = ({ routineId, dayOfWeek, exercises }: WodProps) => {
 	const [state, formAction] = useFormState(
 		(prevState: any, formData: FormData) => updateWorkout(routineId, dayOfWeek, formData),
@@ -31,7 +23,9 @@ export const Wod = ({ routineId, dayOfWeek, exercises }: WodProps) => {
 		<div className='py-4'>
 			<form action={formAction}>
 				{exercises.map((exercise: any) => (
-					<ExerciseCard key={exercise.id} exercise={exercise}></ExerciseCard>
+					<div key={exercise.id} className='bg-white rounded-lg p-4 shadow-md mb-4'>
+						<Exercise exercise={exercise}></Exercise>
+					</div>
 				))}
 				<div>{state.message}</div>
 				<button className='bg-cyan-500 text-white rounded-md w-[100%]' type='submit' aria-disabled={pending}>

@@ -180,6 +180,7 @@ export default async function WodPage({ params }: { params: { routineId: string;
 				<div className='text-center py-4 text-4xl font-bold'>
 					{dayjs().day(wod.dayOfWeek).format('ddd')} workout
 				</div>
+
 				<Wod routineId={routineId} dayOfWeek={wod.dayOfWeek} exercises={wod.exercises}></Wod>
 			</>
 		)

@@ -46,9 +46,7 @@ export const Exercise = ({ exercise }: { exercise: IExercise }) => {
 
 	const { title, sets: exSets } = exercise;
 
-	const initialSets: Array<IExerciseSet> = exSets;
-
-	const [sets, setSets] = useState(initialSets);
+	const [sets, setSets] = useState<Array<IExerciseSet>>(exSets);
 
 	const onChangeCell =
 		(index: number, buildNewSet?: (prevRowValue: IExerciseSet, newFieldValue: string) => IExerciseSet) =>
@@ -62,7 +60,6 @@ export const Exercise = ({ exercise }: { exercise: IExercise }) => {
 	return (
 		<div className='mb-4'>
 			<div className='text-lg text-center font-bold'>{title}</div>
-
 			<table className='w-[100%]'>
 				<thead>
 					<tr className='flex flex-row '>
@@ -73,34 +70,32 @@ export const Exercise = ({ exercise }: { exercise: IExercise }) => {
 						))}
 					</tr>
 				</thead>
-				<tbody>
-					<div className='flex flex-col gap-2'>
-						{sets.map((set: IExerciseSet, index: number) => {
-							const [setCol, prevCol, weightCol, repsCol] = columns;
-							return (
-								<tr key={index} className='flex flex-row gap-2'>
-									<Cell>
-										<Input disabled>{setCol.value(set)}</Input>
-									</Cell>
-									<Cell>
-										<Input disabled>{prevCol.value(set)}</Input>
-									</Cell>
-									<Cell>
-										<Input
-											name={`${exercise.id.toLowerCase()}.${weightCol.key}`}
-											value={weightCol.value(set)}
-											onChange={onChangeCell(index, weightCol.onChange)}></Input>
-									</Cell>
-									<Cell>
-										<Input
-											name={`${exercise.id.toLowerCase()}.${repsCol.key}`}
-											value={repsCol.value(set)}
-											onChange={onChangeCell(index, repsCol.onChange)}></Input>
-									</Cell>
-								</tr>
-							);
-						})}
-					</div>
+				<tbody className='flex flex-col gap-2'>
+					{sets.map((set: any, index: number) => {
+						const [setCol, prevCol, weightCol, repsCol] = columns;
+						return (
+							<tr key={index} className='flex flex-row gap-2'>
+								<Cell>
+									<Input disabled>{setCol.value(set)}</Input>
+								</Cell>
+								<Cell>
+									<Input disabled>{prevCol.value(set)}</Input>
+								</Cell>
+								<Cell>
+									<Input
+										name={`${exercise.id.toLowerCase()}.${weightCol.key}`}
+										value={weightCol.value(set)}
+										onChange={onChangeCell(index, weightCol.onChange)}></Input>
+								</Cell>
+								<Cell>
+									<Input
+										name={`${exercise.id.toLowerCase()}.${repsCol.key}`}
+										value={repsCol.value(set)}
+										onChange={onChangeCell(index, repsCol.onChange)}></Input>
+								</Cell>
+							</tr>
+						);
+					})}
 				</tbody>
 			</table>
 		</div>
