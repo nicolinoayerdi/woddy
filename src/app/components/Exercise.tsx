@@ -44,14 +44,9 @@ export const Exercise = ({ exercise }: { exercise: IExercise }) => {
 		},
 	];
 
-	const { title, sets: exSets, amountOfSets } = exercise;
+	const { title, sets: exSets } = exercise;
 
-	const initialSets: Array<IExerciseSet> = amountOfSets
-		? Array.from({ length: amountOfSets }).map((_, index) => ({
-				repetitions: exSets[0].repetitions,
-				order: index + 1,
-		  }))
-		: exSets;
+	const initialSets: Array<IExerciseSet> = exSets;
 
 	const [sets, setSets] = useState(initialSets);
 

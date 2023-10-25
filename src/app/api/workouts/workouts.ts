@@ -12,13 +12,11 @@ export async function fetchWorkout({ routineId, dayOfWeek }: { routineId: string
 
 		if (workout) {
 			// map ObjectId so it can be sent from server to client component.
-			const { _id, blocks, ...rest } = workout;
-			const mappedBlocks = Object.keys(blocks).map(blockKey => {
-				const block = blocks[blockKey];
-				return block.map((e: any) => ({ ...e, id: e.id?.toString() }));
-			});
+			const { _id, exercises, ...rest } = workout;
 
-			return { ...rest, id: _id.toString(), blocks: mappedBlocks };
+			const mappedExercises = exercises.map((e: any) => ({ ...e, id: e.id?.toString() }));
+
+			return { ...rest, id: _id.toString(), exercises: mappedExercises };
 		}
 		return null;
 	} catch (e) {
@@ -27,13 +25,6 @@ export async function fetchWorkout({ routineId, dayOfWeek }: { routineId: string
 }
 
 export async function editWorkout({ routineId, workoutId, workout, previous }: any) {
-	console.log(
-		'insert workout',
-		{ routineId },
-		{ workout: JSON.stringify(workout) },
-		{ previous: JSON.stringify(previous) }
-	);
-
 	// Define a filter (to find the document to update)
 	const filter = { routineId: new ObjectId(routineId) };
 	const editedAt = new Date();
@@ -41,7 +32,7 @@ export async function editWorkout({ routineId, workoutId, workout, previous }: a
 	// Define the update operation (e.g., setting a new value for a field)
 	const updateDoc = {
 		$set: {
-			blocks: workout.blocks,
+			exercises: workout.exercises,
 			editedAt,
 		},
 	};

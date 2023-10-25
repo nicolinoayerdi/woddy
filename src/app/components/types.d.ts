@@ -16,7 +16,8 @@ export interface IExercise {
 export interface IWorkoutHistory {
 	workoutId: string;
 	editedAt: Date;
-	blocks: {
+	exercises: Array<IExercise>;
+	/* blocks: {
 		[blockName: string]: Array<IExercise>;
-	};
+	}; */
 }
