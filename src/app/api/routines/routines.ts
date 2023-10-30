@@ -1,6 +1,18 @@
 import clientPromise from '../../../lib/mongodb';
 import { ObjectId } from 'mongodb';
 
+export async function createRoutine({ routine }) {
+	try {
+		const client = await clientPromise;
+		const db = client.db('woddy');
+
+		const result = await db.collection('routines').insertOne(routine);
+		return result;
+	} catch (e) {
+		console.error(e);
+	}
+}
+
 export async function fetchRoutines() {
 	try {
 		const client = await clientPromise;

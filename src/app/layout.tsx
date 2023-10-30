@@ -27,13 +27,12 @@ export default async function RootLayout({ children }: { children: React.ReactNo
 						<div className='flex justify-end items-center gap-4'>
 							<a href='/'>Home</a>
 							<a href={`/routines`}>Routines</a>
-							{currentRoutine && <a href={`/routines/${currentRoutineId}`}>Current routine</a>}
-							{currentRoutine && <a href={`/routines/${currentRoutineId}/wod/${dayOfWeek}`}>Wod</a>}
+							{currentRoutine && <a href={`/routines/${currentRoutineId}`}>Current</a>}
 							<a href='/charts'>Charts</a>
 						</div>
 					</nav>
 				</div>
-				<div className='mt-16'>{children}</div>
+				<div className='mt-20 w-[80%] sm:max-w-md flex items-center'>{children}</div>
 			</body>
 		</html>
 	);
