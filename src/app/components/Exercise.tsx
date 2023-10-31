@@ -1,24 +1,8 @@
 'use client';
 import { useState } from 'react';
 import { IExercise, IExerciseSet } from './types';
-
-const Cell = ({ children }: any) => <td className='text-center w-1/4 md:leading-6'>{children}</td>;
-
-const Input = ({ children, name, value, onChange, disabled }: any) =>
-	disabled ? (
-		<div className='remove-arrow w-14 text-center bg-slate-200 leading-6 font-normal rounded-lg px-4 py-0.5'>
-			{children}
-		</div>
-	) : (
-		<input
-			className='remove-arrow w-14 text-center bg-slate-200 leading-6 font-normal rounded-lg px-4 py-0.5'
-			type='number'
-			id={name}
-			name={name}
-			value={value}
-			onChange={onChange}
-		/>
-	);
+import { Cell } from './Cell';
+import { Input } from './Input';
 
 export const Exercise = ({ exercise }: { exercise: IExercise }) => {
 	const columns = [

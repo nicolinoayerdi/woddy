@@ -1,6 +1,8 @@
 'use client';
 
 import { updateWorkout } from '../actions/insertWorkout';
+import { Button } from './Button';
+import { Card } from './Card';
 import { Exercise } from './Exercise';
 // @ts-expect-error
 import { experimental_useFormState as useFormState, experimental_useFormStatus as useFormStatus } from 'react-dom';
@@ -23,14 +25,14 @@ export const Wod = ({ routineId, dayOfWeek, exercises }: WodProps) => {
 		<div className='py-4'>
 			<form action={formAction}>
 				{exercises.map((exercise: any) => (
-					<div key={exercise.id} className='bg-white rounded-lg p-4 shadow-md mb-4'>
+					<Card key={exercise.id}>
 						<Exercise exercise={exercise}></Exercise>
-					</div>
+					</Card>
 				))}
 				<div>{state.message}</div>
-				<button className='bg-cyan-500 text-white rounded-md w-[100%]' type='submit' aria-disabled={pending}>
-					Submit
-				</button>
+				<Button className='w-[100%]' type='submit' aria-disabled={pending}>
+					Save
+				</Button>
 			</form>
 		</div>
 	);

@@ -1,7 +1,7 @@
 import { IExercise } from './types.d';
 export interface IExerciseSet {
 	previous?: number;
-	order?: number;
+	order: number;
 	weight?: number;
 	repetitions?: number;
 }

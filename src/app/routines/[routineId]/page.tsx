@@ -9,12 +9,10 @@ export default async function RoutinePage({ params }: { params: { routineId: str
 
 	const routine = await fetchRoutine(routineId);
 
-	console.log({ routine });
-
 	if (!routine) return <div>Invalid routine</div>;
 
 	return (
-		<>
+		<div className='flex flex-col'>
 			<div className='text-center py-4 text-4xl font-bold'>
 				{routine.title}
 				<div className='text-sm font-extralight'>
@@ -32,7 +30,11 @@ export default async function RoutinePage({ params }: { params: { routineId: str
 				))}
 			</div>
 
-			<Button>Add workout</Button>
-		</>
+			<Button>
+				<Link className='w-fit h-fit' href={`/routines/${routine._id}/wod/add`}>
+					Add workout
+				</Link>
+			</Button>
+		</div>
 	);
 }
