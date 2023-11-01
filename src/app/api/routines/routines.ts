@@ -2,7 +2,7 @@ import { WorkoutDto } from '@/app/types';
 import clientPromise from '../../../lib/mongodb';
 import { ObjectId } from 'mongodb';
 
-export async function createRoutine({ routine }) {
+export async function createRoutine({ routine }: any) {
 	try {
 		const client = await clientPromise;
 		const db = client.db('woddy');

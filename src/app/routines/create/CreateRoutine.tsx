@@ -4,10 +4,11 @@ import { createRoutine } from '@/app/actions/createRoutine';
 import { Button } from '@/app/components/Button';
 import Link from 'next/link';
 import { redirect } from 'next/navigation';
+import { ReactNode } from 'react';
 // @ts-expect-error
 import { experimental_useFormState as useFormState, experimental_useFormStatus as useFormStatus } from 'react-dom';
 
-const Label = ({ children, htmlFor }) => (
+const Label = ({ children, htmlFor }: { children: ReactNode; htmlFor: string }) => (
 	<label className='text-gray-700 text-sm font-bold mb-1' htmlFor={htmlFor}>
 		{children}
 	</label>

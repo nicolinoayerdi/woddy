@@ -13,10 +13,10 @@ interface NewExerciseSet extends IExerciseSet {
 }
 
 interface NewExercise {
-	key: number;
+	exerciseKey: number;
 }
 
-export const Table = ({ exerciseKey }) => {
+export const Table = ({ exerciseKey }: NewExercise) => {
 	const columns = [
 		{ title: '' },
 		{ title: 'set', key: `${exerciseKey}.order` },

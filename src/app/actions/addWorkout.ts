@@ -4,7 +4,7 @@ import { revalidatePath } from 'next/cache';
 import { ObjectId } from 'mongodb';
 import { createWorkout as apiCreateWorkout } from '../api/workouts/workouts';
 
-export async function createWorkout(exerciseKeys: Array<number>, routineId, formData: FormData) {
+export async function createWorkout(exerciseKeys: Array<number>, routineId: string, formData: FormData) {
 	const dayOfWeek = formData.get('day-of-week') ? Number(formData.get('day-of-week')) : null;
 	const exercises = exerciseKeys.map(key => {
 		const weights = formData.getAll(`${key}.weight`);

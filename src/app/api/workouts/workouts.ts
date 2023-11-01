@@ -72,7 +72,7 @@ export async function fetchWorkoutHistory({ workoutId }: { workoutId: string }) 
 	}
 }
 
-export async function createWorkout({ workout }) {
+export async function createWorkout({ workout }: any) {
 	const newWorkout = {
 		...workout,
 		routineId: new ObjectId(workout.routineId),

@@ -19,15 +19,15 @@ interface NewExerciseSet extends IExerciseSet {
 	isNewRow: boolean;
 }
 
-interface NewExercise {
+export interface NewExercise {
 	key: number;
 }
 
 export const AddWorkout = () => {
-	const { routineId } = useParams();
+	const { routineId }: { routineId: string } = useParams();
 
 	const [state, formAction] = useFormState(
-		(prevState, formData) =>
+		(prevState: any, formData: FormData) =>
 			createWorkout(
 				exercises.map(e => e.key),
 				routineId,
