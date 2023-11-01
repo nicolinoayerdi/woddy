@@ -1,8 +1,5 @@
 'use client';
 
-import { createWorkout } from '@/app/actions/addWorkout';
-import { Button } from '@/app/components/Button';
-import { Card } from '@/app/components/Card';
 import { IExerciseSet } from '@/app/components/types';
 import React, { ReactElement, useCallback, useEffect, useState } from 'react';
 
@@ -74,10 +71,6 @@ export const Table = ({ exerciseKey }) => {
 		},
 		[setSets]
 	);
-
-	useEffect(() => {
-		console.log(sets);
-	}, [sets]);
 
 	const [_, setCol, weightCol, repsCol] = columns;
 

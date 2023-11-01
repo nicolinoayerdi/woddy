@@ -69,3 +69,20 @@ export async function fetchWorkoutHistory({ workoutId }: { workoutId: string }) 
 		console.error(e);
 	}
 }
+
+export async function createWorkout({ workout }) {
+	const newWorkout = {
+		...workout,
+		routineId: new ObjectId(workout.routineId),
+		editedAt: new Date(),
+	};
+	try {
+		const client = await clientPromise;
+		const db = client.db('woddy');
+
+		const result = await db.collection('workouts').insertOne(newWorkout);
+		return result;
+	} catch (e) {
+		console.error(e);
+	}
+}

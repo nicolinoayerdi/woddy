@@ -4,11 +4,12 @@ import { createWorkout } from '@/app/actions/addWorkout';
 import { Button } from '@/app/components/Button';
 import { Card } from '@/app/components/Card';
 import { IExerciseSet } from '@/app/components/types';
-import React, { ReactElement, useCallback, useEffect, useState } from 'react';
+import React, { useState } from 'react';
 
 // @ts-expect-error
 import { experimental_useFormState as useFormState, experimental_useFormStatus as useFormStatus } from 'react-dom';
 import { Table } from './ExerciseTable';
+import { useParams } from 'next/navigation';
 
 interface NewExerciseSet extends IExerciseSet {
 	key: number;
@@ -20,7 +21,17 @@ interface NewExercise {
 }
 
 export const AddWorkout = () => {
-	const [state, formAction] = useFormState(createWorkout, { message: null });
+	const { routineId } = useParams();
+
+	const [state, formAction] = useFormState(
+		(prevState, formData) =>
+			createWorkout(
+				exercises.map(e => e.key),
+				routineId,
+				formData
+			),
+		{ message: null }
+	);
 	const [keyCounter, setKeyCounter] = useState(1);
 
 	const { pending } = useFormStatus();
@@ -53,6 +64,8 @@ export const AddWorkout = () => {
 			<Button type='submit' aria-disabled={pending}>
 				Save
 			</Button>
+
+			<b>{state.message}</b>
 		</form>
 	);
 };
