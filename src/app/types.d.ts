@@ -10,7 +10,9 @@ export interface ExerciseDto {
 }
 
 export interface WorkoutDto {
-	dayOfWeek: 1 | 2 | 3 | 4 | 5 | 6 | 7;
+	dayOfWeek: DayOfWeek;
 	routineId: ObjectId;
 	exercises: Array<ExerciseDto>;
 }
+
+export type DayOfWeek = 1 | 2 | 3 | 4 | 5 | 6 | 7;

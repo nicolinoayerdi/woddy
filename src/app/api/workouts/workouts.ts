@@ -10,6 +10,8 @@ export async function fetchWorkout({ routineId, dayOfWeek }: { routineId: string
 			.collection('workouts')
 			.findOne({ dayOfWeek: dayOfWeek, routineId: new ObjectId(routineId) });
 
+		console.log({ routineId, dayOfWeek, workout });
+
 		if (workout) {
 			// map ObjectId so it can be sent from server to client component.
 			const { _id, exercises, ...rest } = workout;
