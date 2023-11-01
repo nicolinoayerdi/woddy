@@ -59,21 +59,27 @@ export const Exercise = ({ exercise }: { exercise: IExercise }) => {
 						const [setCol, prevCol, weightCol, repsCol] = columns;
 						return (
 							<tr key={index} className='flex flex-row gap-2'>
-								<Cell>
-									<Input disabled>{setCol.value(set)}</Input>
+								<Cell className='w-1/4'>
+									<Input className='w-14' disabled>
+										{setCol.value(set)}
+									</Input>
 								</Cell>
-								<Cell>
-									<Input disabled>{prevCol.value(set)}</Input>
+								<Cell className='w-1/4'>
+									<Input className='w-14' disabled>
+										{prevCol.value(set)}
+									</Input>
 								</Cell>
-								<Cell>
+								<Cell className='w-1/4'>
 									<Input
-										name={`${exercise.id.toLowerCase()}.${weightCol.key}`}
+										className='w-14'
+										name={`${exercise.id?.toLowerCase()}.${weightCol.key}`}
 										value={weightCol.value(set)}
 										onChange={onChangeCell(index, weightCol.onChange)}></Input>
 								</Cell>
-								<Cell>
+								<Cell className='w-1/4'>
 									<Input
-										name={`${exercise.id.toLowerCase()}.${repsCol.key}`}
+										className='w-14'
+										name={`${exercise.id?.toLowerCase()}.${repsCol.key}`}
 										value={repsCol.value(set)}
 										onChange={onChangeCell(index, repsCol.onChange)}></Input>
 								</Cell>

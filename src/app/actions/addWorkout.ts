@@ -5,23 +5,6 @@ import { ObjectId } from 'mongodb';
 import { createWorkout as apiCreateWorkout } from '../api/workouts/workouts';
 import dayjs from 'dayjs';
 
-interface SetDto {
-	order: number;
-	weight: number;
-	repetitions: number;
-}
-
-interface ExerciseDto {
-	title: string;
-	sets: Array<SetDto>;
-}
-
-interface WorkoutDto {
-	dayOfWeek: 1 | 2 | 3 | 4 | 5 | 6 | 7;
-	routineId: ObjectId;
-	exercises: Array<ExerciseDto>;
-}
-
 export async function createWorkout(exerciseKeys: Array<number>, routineId, formData: FormData) {
 	const exercises = exerciseKeys.map(key => {
 		const weights = formData.getAll(`${key}.weight`);

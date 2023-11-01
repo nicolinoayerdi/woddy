@@ -1,3 +1,4 @@
+import { WorkoutDto } from '@/app/types';
 import clientPromise from '../../../lib/mongodb';
 import { ObjectId } from 'mongodb';
 
@@ -40,15 +41,27 @@ export async function fetchCurrentRoutine() {
 	}
 }
 
-export async function fetchRoutine(routineId: string) {
+interface RoutineDto {
+	_id: ObjectId;
+	title: String;
+	initialDate: Date;
+	validUntil: Date;
+	workouts?: Array<WorkoutDto>;
+}
+
+export async function fetchRoutine(routineId: string): Promise<RoutineDto | undefined> {
 	const objectId = new ObjectId(routineId);
 
 	try {
 		const client = await clientPromise;
 		const db = client.db('woddy');
 
-		const routine = await db.collection('routines').findOne({ _id: objectId });
-		return routine;
+		const workouts = (await db.collection('workouts').find({ routineId: objectId }).toArray()).map(
+			({ dayOfWeek, exercises, editedAt, routineId }) => ({ dayOfWeek, exercises, editedAt, routineId })
+		);
+
+		const routine = (await db.collection('routines').findOne({ _id: objectId })) as RoutineDto;
+		return { ...routine, workouts };
 	} catch (e) {
 		console.error(e);
 	}

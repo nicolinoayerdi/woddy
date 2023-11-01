@@ -11,21 +11,23 @@ export default async function RoutinePage({ params }: { params: { routineId: str
 
 	if (!routine) return <div>Invalid routine</div>;
 
+	const initialDate = dayjs(routine.initialDate);
+	const validUntil = dayjs(routine.validUntil);
+
 	return (
-		<div className='flex flex-col'>
-			<div className='text-center py-4 text-4xl font-bold'>
+		<div className='flex flex-col gap-4'>
+			<div className='text-center text-4xl font-bold'>
 				{routine.title}
+				<div className='text-sm font-extralight'>{validUntil.isBefore(dayjs()) && 'Expired'}</div>
 				<div className='text-sm font-extralight'>
-					{dayjs(routine.validUntil).isBefore(dayjs())
-						? 'Expired'
-						: `Valid until ${dayjs(routine.validUntil).format('DD/MM/YYYY')}`}
+					From {initialDate.format('DD/MM/YYYY')} to {validUntil.format('DD/MM/YYYY')}
 				</div>
 			</div>
 
-			<div className='flex flex-col gap-6'>
-				{routine?.wods?.map((wod: any) => (
-					<Link key={wod.dayOfWeek} href={`/routines/${routine._id}/wod/${wod.dayOfWeek}`}>
-						<WodSummary {...wod}></WodSummary>
+			<div className='flex flex-col gap-4'>
+				{routine?.workouts?.map((w: any) => (
+					<Link key={w.dayOfWeek} href={`/routines/${routine._id}/wod/${w.dayOfWeek}`}>
+						<WodSummary {...w}></WodSummary>
 					</Link>
 				))}
 			</div>
