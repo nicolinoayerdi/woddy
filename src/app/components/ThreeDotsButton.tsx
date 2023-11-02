@@ -1,8 +1,8 @@
 'use client';
 
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, Ref, ButtonHTMLAttributes, LegacyRef, DetailedHTMLProps } from 'react';
 
-const ThreeDotsButton = ({ options }) => {
+const ThreeDotsButton = ({ options }: { options: Array<{ label: string; onClick: () => void }> }) => {
 	const [isOpen, setIsOpen] = useState(false);
 	const buttonRef = useRef(null);
 
@@ -10,8 +10,8 @@ const ThreeDotsButton = ({ options }) => {
 		setIsOpen(!isOpen);
 	};
 
-	const handleClickOutside = event => {
-		if (buttonRef.current && !buttonRef.current.contains(event.target)) {
+	const handleClickOutside = (event: MouseEvent) => {
+		if (buttonRef.current && !(buttonRef.current as HTMLDivElement).contains(event.target as Node)) {
 			setIsOpen(false);
 		}
 	};

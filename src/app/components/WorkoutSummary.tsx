@@ -26,7 +26,12 @@ export const WorkoutSummary = ({ id, dayOfWeek, exercises, editedAt, href }: Wor
 
 				<ThreeDotsButton
 					options={[
-						{ label: 'Edit', href: '#' },
+						{
+							label: 'Edit',
+							onClick: () => {
+								console.log('edit');
+							},
+						},
 						{
 							label: 'Delete',
 							onClick: () => {

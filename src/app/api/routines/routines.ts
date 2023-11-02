@@ -1,6 +1,7 @@
 import { WorkoutDto } from '@/app/types';
 import clientPromise from '../../../lib/mongodb';
 import { ObjectId } from 'mongodb';
+import { isValidObjectId } from '../utils';
 
 interface RoutineDto {
 	_id: ObjectId;
@@ -50,6 +51,8 @@ export async function fetchCurrentRoutine() {
 }
 
 export async function fetchRoutine(routineId: string): Promise<RoutineDto | undefined> {
+	if (!isValidObjectId(routineId)) return undefined;
+
 	const objectId = new ObjectId(routineId);
 
 	try {
@@ -68,6 +71,19 @@ export async function fetchRoutine(routineId: string): Promise<RoutineDto | unde
 
 		const routine = (await db.collection('routines').findOne({ _id: objectId })) as RoutineDto;
 		return { ...routine, workouts };
+	} catch (e) {
+		console.error(e);
+	}
+}
+
+export async function deleteRoutine({ routineId }: { routineId: string }) {
+	try {
+		const client = await clientPromise;
+		const db = client.db('woddy');
+
+		const result = await db.collection('routines').deleteOne({ _id: new ObjectId(routineId) });
+		console.log({ result });
+		return result;
 	} catch (e) {
 		console.error(e);
 	}

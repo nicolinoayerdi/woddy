@@ -15,9 +15,8 @@ export default async function RoutinesPage() {
 			{routines?.map(routine => (
 				<Link key={routine._id.toString()} href={`routines/${routine._id}`}>
 					<div className='flex flex-row justify-between items-center gap-4'>
-						<b>{routine.title || 'Untitled'}</b>
-						<div className='text-sm font-extralight'>
-							{getDateRange(routine.initialDate, routine.validUntil)}
+						<div>
+							<b>{routine.title || 'Untitled'}</b>
 						</div>
 					</div>
 				</Link>
