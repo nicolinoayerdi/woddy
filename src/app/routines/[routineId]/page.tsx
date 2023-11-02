@@ -1,6 +1,6 @@
 import { fetchRoutine } from '@/app/api/routines/routines';
 import { Button } from '@/app/components/Button';
-import { WodSummary } from '@/app/components/WodSummary';
+import { WorkoutSummary } from '@/app/components/WorkoutSummary';
 import dayjs from 'dayjs';
 import Link from 'next/link';
 
@@ -26,9 +26,10 @@ export default async function RoutinePage({ params }: { params: { routineId: str
 
 			<div className='flex flex-col gap-4'>
 				{routine?.workouts?.map((w: any) => (
-					<Link key={w.dayOfWeek} href={`/routines/${routine._id}/wod/${w.dayOfWeek}`}>
-						<WodSummary {...w}></WodSummary>
-					</Link>
+					<WorkoutSummary
+						key={w.dayOfWeek}
+						href={`/routines/${routine._id}/wod/${w.dayOfWeek}`}
+						{...w}></WorkoutSummary>
 				))}
 			</div>
 

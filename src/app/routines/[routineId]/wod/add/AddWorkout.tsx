@@ -26,6 +26,8 @@ export interface NewExercise {
 export const AddWorkout = () => {
 	const { routineId }: { routineId: string } = useParams();
 
+	const [keyCounter, setKeyCounter] = useState(1);
+
 	const [state, formAction] = useFormState(
 		(prevState: any, formData: FormData) =>
 			createWorkout(
@@ -35,7 +37,6 @@ export const AddWorkout = () => {
 			),
 		{ message: null }
 	);
-	const [keyCounter, setKeyCounter] = useState(1);
 
 	const { pending } = useFormStatus();
 

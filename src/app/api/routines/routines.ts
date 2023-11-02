@@ -2,6 +2,14 @@ import { WorkoutDto } from '@/app/types';
 import clientPromise from '../../../lib/mongodb';
 import { ObjectId } from 'mongodb';
 
+interface RoutineDto {
+	_id: ObjectId;
+	title: String;
+	initialDate: Date;
+	validUntil: Date;
+	workouts?: Array<WorkoutDto>;
+}
+
 export async function createRoutine({ routine }: any) {
 	try {
 		const client = await clientPromise;
@@ -41,14 +49,6 @@ export async function fetchCurrentRoutine() {
 	}
 }
 
-interface RoutineDto {
-	_id: ObjectId;
-	title: String;
-	initialDate: Date;
-	validUntil: Date;
-	workouts?: Array<WorkoutDto>;
-}
-
 export async function fetchRoutine(routineId: string): Promise<RoutineDto | undefined> {
 	const objectId = new ObjectId(routineId);
 
@@ -57,7 +57,13 @@ export async function fetchRoutine(routineId: string): Promise<RoutineDto | unde
 		const db = client.db('woddy');
 
 		const workouts = (await db.collection('workouts').find({ routineId: objectId }).toArray()).map(
-			({ dayOfWeek, exercises, editedAt, routineId }) => ({ dayOfWeek, exercises, editedAt, routineId })
+			({ _id, dayOfWeek, exercises, editedAt, routineId }) => ({
+				id: (_id as ObjectId).toString(),
+				dayOfWeek,
+				exercises,
+				editedAt,
+				routineId: (routineId as ObjectId).toString(),
+			})
 		);
 
 		const routine = (await db.collection('routines').findOne({ _id: objectId })) as RoutineDto;

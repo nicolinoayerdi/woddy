@@ -10,8 +10,6 @@ export async function fetchWorkout({ routineId, dayOfWeek }: { routineId: string
 			.collection('workouts')
 			.findOne({ dayOfWeek: dayOfWeek, routineId: new ObjectId(routineId) });
 
-		console.log({ routineId, dayOfWeek, workout });
-
 		if (workout) {
 			// map ObjectId so it can be sent from server to client component.
 			const { _id, exercises, ...rest } = workout;
@@ -47,8 +45,7 @@ export async function editWorkout({ routineId, workoutId, workout, previous }: a
 
 		const result = await db.collection('workouts').updateOne(filter, updateDoc);
 		const historyResult = await db.collection('workouts_history').insertOne(workoutHistory);
-		console.log({ result });
-		console.log({ historyResult });
+
 		return result;
 	} catch (e) {
 		console.error(e);
@@ -83,6 +80,19 @@ export async function createWorkout({ workout }: any) {
 		const db = client.db('woddy');
 
 		const result = await db.collection('workouts').insertOne(newWorkout);
+		return result;
+	} catch (e) {
+		console.error(e);
+	}
+}
+
+export async function deleteWorkout({ workoutId }: { workoutId: string }) {
+	try {
+		const client = await clientPromise;
+		const db = client.db('woddy');
+
+		const result = await db.collection('workouts').deleteOne({ _id: new ObjectId(workoutId) });
+		console.log({ result });
 		return result;
 	} catch (e) {
 		console.error(e);
