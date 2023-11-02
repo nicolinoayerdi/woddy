@@ -3,12 +3,19 @@ import clientPromise from '../../../lib/mongodb';
 import { ObjectId } from 'mongodb';
 import { isValidObjectId } from '../utils';
 
-interface RoutineDto {
-	_id: ObjectId;
+interface RoutineBase {
 	title: String;
 	initialDate: Date;
 	validUntil: Date;
 	workouts?: Array<WorkoutDto>;
+}
+
+interface RoutineDocument extends RoutineBase {
+	_id: ObjectId;
+}
+
+interface RoutineDto extends RoutineBase {
+	id: String;
 }
 
 export async function createRoutine({ routine }: any) {
@@ -69,7 +76,10 @@ export async function fetchRoutine(routineId: string): Promise<RoutineDto | unde
 			})
 		);
 
-		const routine = (await db.collection('routines').findOne({ _id: objectId })) as RoutineDto;
+		const { _id, ...rest } = (await db.collection('routines').findOne({ _id: objectId })) as RoutineDocument;
+
+		const routine = { id: _id.toString(), ...rest };
+
 		return { ...routine, workouts };
 	} catch (e) {
 		console.error(e);
