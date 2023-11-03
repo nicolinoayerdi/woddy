@@ -1,8 +1,10 @@
+import { revalidatePath } from 'next/cache';
 import clientPromise from '../../../lib/mongodb';
 import { ObjectId } from 'mongodb';
 
 export async function fetchWorkout({ routineId, dayOfWeek }: { routineId: string; dayOfWeek: number }): Promise<any> {
 	try {
+		console.log('fetch workout');
 		const client = await clientPromise;
 		const db = client.db('woddy');
 
@@ -10,11 +12,32 @@ export async function fetchWorkout({ routineId, dayOfWeek }: { routineId: string
 			.collection('workouts')
 			.findOne({ dayOfWeek: dayOfWeek, routineId: new ObjectId(routineId) });
 
+		const [lastLog] = await db
+			.collection('workouts_history')
+			.find({ workoutId: workout?._id.toString() })
+			.sort({ editedAt: -1 })
+			.limit(1)
+			.toArray();
+
+		console.log({ lastLog });
+
 		if (workout) {
 			// map ObjectId so it can be sent from server to client component.
 			const { _id, exercises, ...rest } = workout;
 
-			const mappedExercises = exercises.map((e: any) => ({ ...e, id: e.id?.toString() }));
+			const getPrevious = (exerciseIndex: number, setIndex: number) =>
+				lastLog.exercises[exerciseIndex]?.sets[setIndex]?.weight;
+
+			const mappedExercises = exercises.map((e: any, exerciseIndex: number) => {
+				const mappedSets = e.sets.map(
+					(s: { order: number; weight: number; repetitions: number }, setIndex: number) => ({
+						...s,
+						previous: getPrevious(exerciseIndex, setIndex),
+					})
+				);
+
+				return { ...e, id: e.id?.toString(), sets: mappedSets };
+			});
 
 			return { ...rest, id: _id.toString(), exercises: mappedExercises };
 		}
@@ -45,6 +68,10 @@ export async function editWorkout({ routineId, workoutId, workout, previous }: a
 
 		const result = await db.collection('workouts').updateOne(filter, updateDoc);
 		const historyResult = await db.collection('workouts_history').insertOne(workoutHistory);
+
+		console.log({ historyResult });
+
+		revalidatePath('/');
 
 		return result;
 	} catch (e) {

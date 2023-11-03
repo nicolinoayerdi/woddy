@@ -3,6 +3,7 @@
 import { revalidatePath } from 'next/cache';
 import { editWorkout, fetchWorkout } from '../api/workouts/workouts';
 import { ObjectId } from 'mongodb';
+import { RedirectType, redirect } from 'next/navigation';
 
 interface SetDto {
 	order: string;
@@ -29,9 +30,11 @@ export async function updateWorkout(routineId: string, workoutId: number, formDa
 	if (w) {
 		const previous = { exercises: w.exercises, workoutId: w.id };
 
+		console.log({ routineId, workoutId, w });
+
 		const exercises = w.exercises.map((e: ExerciseDto) => {
-			const weight = formData.getAll(`${e.id.toString()}.weight`);
-			const reps = formData.getAll(`${e.id.toString()}.repetitions`);
+			const weight = formData.getAll(`${e.title.toString().toLowerCase()}.weight`);
+			const reps = formData.getAll(`${e.title.toString().toLowerCase()}.repetitions`);
 			const newSets: Array<SetDto> = e.sets.map((set: SetDto, index) => ({
 				...set,
 				weight: Number(weight[index]),
@@ -41,14 +44,11 @@ export async function updateWorkout(routineId: string, workoutId: number, formDa
 			return { ...e, sets: newSets };
 		});
 
-		try {
-			await editWorkout({ routineId, workoutId, workout: { exercises }, previous });
-			revalidatePath('/');
-			return { message: 'updated workout ' };
-		} catch (e) {
-			return { message: 'failed to update workout' };
-		}
+		await editWorkout({ routineId, workoutId, workout: { exercises }, previous });
+		revalidatePath('/');
+		redirect(`${w.dayOfWeek}/success`, RedirectType.push);
+		return { message: 'updated workout ' };
 	}
 
-	return { message: 'failed to update workout' };
+	return { message: 'workout does not exists' };
 }

@@ -6,7 +6,13 @@ import { Input } from './Input';
 
 export const Exercise = ({ exercise }: { exercise: IExercise }) => {
 	const columns = [
-		{ title: 'set', value: (row: IExerciseSet) => row.order },
+		{
+			title: 'set',
+			value: (row: IExerciseSet) => {
+				console.log(row.order);
+				return row.order;
+			},
+		},
 		{ title: 'prev', value: (row: IExerciseSet) => row.previous || ' - ' },
 		{
 			title: 'kg',
@@ -60,26 +66,22 @@ export const Exercise = ({ exercise }: { exercise: IExercise }) => {
 						return (
 							<tr key={index} className='flex flex-row gap-2'>
 								<Cell className='w-1/4'>
-									<Input className='w-14' disabled>
-										{setCol.value(set)}
-									</Input>
+									<Input value={setCol.value(set)} className='w-14' disabled></Input>
 								</Cell>
 								<Cell className='w-1/4'>
-									<Input className='w-14' disabled>
-										{prevCol.value(set)}
-									</Input>
+									<Input value={prevCol.value(set)} className='w-14' disabled></Input>
 								</Cell>
 								<Cell className='w-1/4'>
 									<Input
 										className='w-14'
-										name={`${exercise.id?.toLowerCase()}.${weightCol.key}`}
+										name={`${exercise.title?.toLowerCase()}.${weightCol.key}`}
 										value={weightCol.value(set)}
 										onChange={onChangeCell(index, weightCol.onChange)}></Input>
 								</Cell>
 								<Cell className='w-1/4'>
 									<Input
 										className='w-14'
-										name={`${exercise.id?.toLowerCase()}.${repsCol.key}`}
+										name={`${exercise.title?.toLowerCase()}.${repsCol.key}`}
 										value={repsCol.value(set)}
 										onChange={onChangeCell(index, repsCol.onChange)}></Input>
 								</Cell>

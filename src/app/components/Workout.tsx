@@ -29,7 +29,7 @@ export const Wod = ({ routineId, dayOfWeek, exercises }: WodProps) => {
 						<Exercise exercise={exercise}></Exercise>
 					</Card>
 				))}
-				<div>{state.message}</div>
+				{state.message && <div>{state.message}</div>}
 				<Button className='w-[100%]' type='submit' aria-disabled={pending}>
 					Save
 				</Button>
