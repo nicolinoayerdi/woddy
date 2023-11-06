@@ -4,7 +4,7 @@ import { ObjectId } from 'mongodb';
 
 export async function fetchWorkout({ routineId, dayOfWeek }: { routineId: string; dayOfWeek: number }): Promise<any> {
 	try {
-		console.log('fetch workout');
+		console.log('fetch workout', routineId, dayOfWeek);
 		const client = await clientPromise;
 		const db = client.db('woddy');
 
@@ -19,14 +19,12 @@ export async function fetchWorkout({ routineId, dayOfWeek }: { routineId: string
 			.limit(1)
 			.toArray();
 
-		console.log({ lastLog });
-
 		if (workout) {
 			// map ObjectId so it can be sent from server to client component.
 			const { _id, exercises, ...rest } = workout;
 
 			const getPrevious = (exerciseIndex: number, setIndex: number) =>
-				lastLog.exercises[exerciseIndex]?.sets[setIndex]?.weight;
+				lastLog ? lastLog.exercises[exerciseIndex]?.sets[setIndex]?.weight : 0;
 
 			const mappedExercises = exercises.map((e: any, exerciseIndex: number) => {
 				const mappedSets = e.sets.map(

@@ -25,11 +25,9 @@ export default async function RoutinePage({ params }: { params: { routineId: str
 				))}
 			</div>
 
-			<Button>
-				<Link className='w-fit h-fit' href={`/routines/${routine.id}/wod/add`}>
-					Add workout
-				</Link>
-			</Button>
+			<Link href={`/routines/${routine.id}/wod/add`}>
+				<Button className='w-fit h-fit'>Add workout</Button>
+			</Link>
 		</div>
 	);
 }

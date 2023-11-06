@@ -32,7 +32,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
 						</div>
 					</nav>
 				</div>
-				<div className='mt-20 w-[80%] sm:max-w-md flex items-center'>{children}</div>
+				<div className='mt-20 w-[90%] flex sm:max-w-md'>{children}</div>
 			</body>
 		</html>
 	);
