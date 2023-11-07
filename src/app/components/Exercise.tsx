@@ -8,21 +8,21 @@ export const Exercise = ({ exercise }: { exercise: IExercise }) => {
 	const columns = [
 		{ title: 'prev', value: (row: IExerciseSet) => row.previous || ' - ' },
 		{
-			title: 'kg',
-			key: 'weight',
-			value: (row: IExerciseSet) => row.weight,
-			onChange: (prevRowValue: IExerciseSet, newFieldValue: string) => ({
-				...prevRowValue,
-				weight: newFieldValue ? Number(newFieldValue) : undefined,
-			}),
-		},
-		{
 			title: 'reps',
 			key: 'repetitions',
 			value: (row: IExerciseSet) => row.repetitions,
 			onChange: (prevRowValue: IExerciseSet, newFieldValue: string) => ({
 				...prevRowValue,
 				repetitions: newFieldValue ? Number(newFieldValue) : undefined,
+			}),
+		},
+		{
+			title: 'kg',
+			key: 'weight',
+			value: (row: IExerciseSet) => row.weight,
+			onChange: (prevRowValue: IExerciseSet, newFieldValue: string) => ({
+				...prevRowValue,
+				weight: newFieldValue ? Number(newFieldValue) : undefined,
 			}),
 		},
 	];
@@ -55,7 +55,7 @@ export const Exercise = ({ exercise }: { exercise: IExercise }) => {
 				</thead>
 				<tbody className='flex flex-col gap-2'>
 					{sets.map((set: any, index: number) => {
-						const [prevCol, weightCol, repsCol] = columns;
+						const [prevCol, repsCol, weightCol] = columns;
 						return (
 							<tr key={index} className='flex flex-row gap-2'>
 								<Cell className='w-1/3 h-10'>
@@ -63,17 +63,19 @@ export const Exercise = ({ exercise }: { exercise: IExercise }) => {
 								</Cell>
 								<Cell className='w-1/3 h-10'>
 									<Input
-										className='w-full'
-										name={`${exercise.title?.toLowerCase()}.${weightCol.key}`}
-										value={weightCol.value(set)}
-										onChange={onChangeCell(index, weightCol.onChange)}></Input>
-								</Cell>
-								<Cell className='w-1/3 h-10'>
-									<Input
+										inputmode='numeric'
 										className='w-full'
 										name={`${exercise.title?.toLowerCase()}.${repsCol.key}`}
 										value={repsCol.value(set)}
 										onChange={onChangeCell(index, repsCol.onChange)}></Input>
+								</Cell>
+								<Cell className='w-1/3 h-10'>
+									<Input
+										inputmode='numeric'
+										className='w-full'
+										name={`${exercise.title?.toLowerCase()}.${weightCol.key}`}
+										value={weightCol.value(set)}
+										onChange={onChangeCell(index, weightCol.onChange)}></Input>
 								</Cell>
 							</tr>
 						);

@@ -102,7 +102,7 @@ export const Table = ({ exerciseKey }: NewExercise) => {
 			<button
 				type='button'
 				onClick={() => addRow()}
-				className='ease-in-out duration-300 w-[100%] text-center bg-slate-200 leading-6 px-4 py-0.5 hover:bg-cyan-700 hover:text-white text-cyan-600 font-bold rounded-lg focus:outline-none focus:ring focus:border-cyan-700'>
+				className='ease-in-out duration-300 w-[100%] h-10 text-center bg-slate-200 leading-6 px-4 py-0.5 hover:bg-cyan-700 hover:text-white text-cyan-600 font-bold rounded-lg focus:outline-none focus:ring focus:border-cyan-700'>
 				Add set
 			</button>
 		</div>

@@ -21,6 +21,7 @@ interface WorkoutDto {
 	id: string;
 	dayOfWeek: number;
 	routineId: string;
+	duration: number;
 	exercises: Array<ExerciseDto>;
 }
 
@@ -28,9 +29,7 @@ export async function updateWorkout(routineId: string, workoutId: number, formDa
 	let w: WorkoutDto | null | undefined = await fetchWorkout({ routineId, dayOfWeek: workoutId });
 
 	if (w) {
-		const previous = { exercises: w.exercises, workoutId: w.id };
-
-		console.log({ routineId, workoutId, w });
+		const previous = { exercises: w.exercises, workoutId: w.id, duration: w.duration };
 
 		const exercises = w.exercises.map((e: ExerciseDto) => {
 			const weight = formData.getAll(`${e.title.toString().toLowerCase()}.weight`);
@@ -44,7 +43,9 @@ export async function updateWorkout(routineId: string, workoutId: number, formDa
 			return { ...e, sets: newSets };
 		});
 
-		await editWorkout({ routineId, workoutId, workout: { exercises }, previous });
+		const duration = formData.get('duration') ? Number(formData.get('duration')) : null;
+
+		await editWorkout({ routineId, workoutId, workout: { exercises, duration }, previous });
 		revalidatePath('/');
 		redirect(`${w.dayOfWeek}/success`, RedirectType.push);
 		return { message: 'updated workout ' };

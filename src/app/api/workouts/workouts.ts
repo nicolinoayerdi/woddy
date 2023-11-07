@@ -54,6 +54,7 @@ export async function editWorkout({ routineId, workoutId, workout, previous }: a
 	const updateDoc = {
 		$set: {
 			exercises: workout.exercises,
+			duration: workout.duration,
 			editedAt,
 		},
 	};
@@ -66,8 +67,6 @@ export async function editWorkout({ routineId, workoutId, workout, previous }: a
 
 		const result = await db.collection('workouts').updateOne(filter, updateDoc);
 		const historyResult = await db.collection('workouts_history').insertOne(workoutHistory);
-
-		console.log({ historyResult });
 
 		revalidatePath('/');
 
