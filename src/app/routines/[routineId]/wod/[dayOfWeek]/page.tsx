@@ -1,6 +1,6 @@
 import { fetchWorkout } from '@/app/api/workouts/workouts';
-import { Wod } from '../../../../components/Workout';
 import dayjs from 'dayjs';
+import { Workout } from './Workout';
 
 export default async function WodPage({ params }: { params: { routineId: string; dayOfWeek: number } }) {
 	const dayOfWeek = Number(params.dayOfWeek);
@@ -16,7 +16,7 @@ export default async function WodPage({ params }: { params: { routineId: string;
 					{dayjs().day(wod.dayOfWeek).format('ddd')} workout
 				</div>
 
-				<Wod routineId={routineId} dayOfWeek={wod.dayOfWeek} exercises={wod.exercises}></Wod>
+				<Workout routineId={routineId} dayOfWeek={wod.dayOfWeek} exercises={wod.exercises}></Workout>
 			</div>
 		)
 	);

@@ -1,12 +1,12 @@
 'use client';
 
-import { updateWorkout } from '../actions/insertWorkout';
-import { Button } from './Button';
-import { Card } from './Card';
+import { updateWorkout } from '../../../../actions/insertWorkout';
+import { Button } from '../../../../components/Button';
+import { Card } from '../../../../components/Card';
 import { Exercise } from './Exercise';
 // @ts-expect-error
 import { experimental_useFormState as useFormState, experimental_useFormStatus as useFormStatus } from 'react-dom';
-import { Input } from './Input';
+import { Input } from '../../../../components/Input';
 
 export interface WodProps {
 	exercises: Array<any>;
@@ -14,7 +14,7 @@ export interface WodProps {
 	dayOfWeek: number;
 }
 
-export const Wod = ({ routineId, dayOfWeek, exercises }: WodProps) => {
+export const Workout = ({ routineId, dayOfWeek, exercises }: WodProps) => {
 	const [state, formAction] = useFormState(
 		(prevState: any, formData: FormData) => updateWorkout(routineId, dayOfWeek, formData),
 		{ message: null }

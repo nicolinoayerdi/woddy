@@ -1,8 +1,8 @@
 'use client';
 import { useState } from 'react';
-import { IExercise, IExerciseSet } from './types';
-import { Cell } from './Cell';
-import { Input } from './Input';
+import { IExercise, IExerciseSet } from '../../../../components/types';
+import { Cell } from '../../../../components/Cell';
+import { Input } from '../../../../components/Input';
 
 export const Exercise = ({ exercise }: { exercise: IExercise }) => {
 	const columns = [

@@ -1,5 +1,5 @@
 import Image from 'next/image';
-import { Wod } from './components/Workout';
+import { Wod } from './routines/[routineId]/wod/[dayOfWeek]/Workout';
 
 export default function Home() {
 	const wod = {
