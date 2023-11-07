@@ -55,7 +55,7 @@ export const AddWorkout = () => {
 			{state.created && (
 				<div className='flex flex-col gap-2 text-center bg-green-500 text-white rounded-md py-2'>
 					<b>{state.message}</b>
-					<Link className='underline' href={`/routines/${state.routineId}/wod/${state.dayOfWeek}`}>
+					<Link className='underline' href={`/routines/${state.routineId}/workout/${state.workoutId}`}>
 						Click here to go to workout
 					</Link>
 				</div>

@@ -7,6 +7,8 @@ import { ExerciseDto } from '../types';
 import ThreeDotsButton from './ThreeDotsButton';
 import Link from 'next/link';
 import { deleteWorkout } from '../actions/deleteWorkout';
+import { Button } from './Button';
+import { redirect } from 'next/navigation';
 
 export interface WorkoutSummaryProps {
 	id: string;
@@ -20,18 +22,10 @@ export const WorkoutSummary = ({ id, dayOfWeek, exercises, editedAt, href }: Wor
 	return (
 		<div className='flex flex-col bg-white rounded-lg shadow-md p-4 gap-1'>
 			<div className='flex flex-row justify-between items-center'>
-				<Link className='flex items-center' href={href}>
-					<h2 className='text-lg font-semibold'>{dayjs().day(dayOfWeek).format('dddd')}</h2>
-				</Link>
+				<h2 className='text-lg font-semibold'>{dayjs().day(dayOfWeek).format('dddd')}</h2>
 
 				<ThreeDotsButton
 					options={[
-						{
-							label: 'Edit',
-							onClick: () => {
-								console.log('edit');
-							},
-						},
 						{
 							label: 'Delete',
 							onClick: () => {
@@ -45,14 +39,18 @@ export const WorkoutSummary = ({ id, dayOfWeek, exercises, editedAt, href }: Wor
 				<div className='text-gray-600 text-sm font-extralight'>
 					Last update {dayjs(editedAt).format('DD/MM/YYYY')}
 				</div>
-				<div className='mt-4'>
-					<ul>
-						<div className='flex flex-row gap-1'>
-							<Tag key={1}>Tag 1</Tag>
-							<Tag key={2}>Tag 2</Tag>
-							<Tag key={3}>Tag 3</Tag>
-						</div>
-					</ul>
+				<div className='mt-4 flex flex-row w-full gap-2'>
+					<Link className='w-full' href={href}>
+						<Button className='w-full' type='button' kind='secondary'>
+							Edit
+						</Button>
+					</Link>
+
+					<Link className='w-full' href={`${href}/charts`}>
+						<Button type='button' kind='secondary' className='w-full'>
+							Charts
+						</Button>
+					</Link>
 				</div>
 			</div>
 		</div>

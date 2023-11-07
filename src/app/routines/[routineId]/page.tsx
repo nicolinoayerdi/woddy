@@ -20,12 +20,12 @@ export default async function RoutinePage({ params }: { params: { routineId: str
 				{routine?.workouts?.map((w: any) => (
 					<WorkoutSummary
 						key={w.dayOfWeek}
-						href={`/routines/${routine.id}/wod/${w.dayOfWeek}`}
+						href={`/routines/${routine.id}/workout/${w.id}`}
 						{...w}></WorkoutSummary>
 				))}
 			</div>
 
-			<Link href={`/routines/${routine.id}/wod/add`}>
+			<Link href={`/routines/${routine.id}/workout/add`}>
 				<Button className='w-fit h-fit'>Add workout</Button>
 			</Link>
 		</div>

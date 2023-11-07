@@ -2,15 +2,13 @@ import { revalidatePath } from 'next/cache';
 import clientPromise from '../../../lib/mongodb';
 import { ObjectId } from 'mongodb';
 
-export async function fetchWorkout({ routineId, dayOfWeek }: { routineId: string; dayOfWeek: number }): Promise<any> {
+export async function fetchWorkout({ routineId, workoutId }: { routineId: string; workoutId: string }): Promise<any> {
 	try {
-		console.log('fetch workout', routineId, dayOfWeek);
+		console.log('fetch workout', routineId, workoutId);
 		const client = await clientPromise;
 		const db = client.db('woddy');
 
-		const workout = await db
-			.collection('workouts')
-			.findOne({ dayOfWeek: dayOfWeek, routineId: new ObjectId(routineId) });
+		const workout = await db.collection('workouts').findOne({ _id: new ObjectId(workoutId) });
 
 		const [lastLog] = await db
 			.collection('workouts_history')

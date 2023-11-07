@@ -33,7 +33,12 @@ export async function createWorkout(exerciseKeys: Array<number>, routineId: stri
 	try {
 		const workoutCreated = await apiCreateWorkout({ workout });
 		revalidatePath('/');
-		return { message: 'Workout created ', created: true, routineId: routineId, dayOfWeek };
+		return {
+			message: 'Workout created ',
+			created: true,
+			routineId: routineId,
+			workoutId: workoutCreated?.insertedId.toString(),
+		};
 	} catch (e) {
 		return { message: 'Failed to create workout' };
 	}

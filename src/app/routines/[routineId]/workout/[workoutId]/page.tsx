@@ -2,12 +2,9 @@ import { fetchWorkout } from '@/app/api/workouts/workouts';
 import dayjs from 'dayjs';
 import { Workout } from './Workout';
 
-export default async function WodPage({ params }: { params: { routineId: string; dayOfWeek: number } }) {
-	const dayOfWeek = Number(params.dayOfWeek);
-	const { routineId } = params;
-	const wod = await fetchWorkout({ routineId, dayOfWeek });
-
-	if (!wod) return <div>No workout for {dayjs().day(dayOfWeek).format('dddd')}</div>;
+export default async function WodPage({ params }: { params: { routineId: string; workoutId: string } }) {
+	const { routineId, workoutId } = params;
+	const wod = await fetchWorkout({ routineId, workoutId });
 
 	return (
 		wod && (
