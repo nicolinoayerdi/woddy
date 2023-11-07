@@ -35,7 +35,7 @@ export const Workout = ({ routineId, dayOfWeek, exercises }: WodProps) => {
 					<Input
 						name='duration'
 						className='w-[20%] h-14'
-						inputmode='numeric'
+						inputMode='numeric'
 						min={0}
 						placeholder='Duración'></Input>
 				</Card>

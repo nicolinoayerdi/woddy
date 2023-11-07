@@ -63,7 +63,7 @@ export const Exercise = ({ exercise }: { exercise: IExercise }) => {
 								</Cell>
 								<Cell className='w-1/3 h-10'>
 									<Input
-										inputmode='numeric'
+										inputMode='numeric'
 										className='w-full'
 										name={`${exercise.title?.toLowerCase()}.${repsCol.key}`}
 										value={repsCol.value(set)}
@@ -71,7 +71,7 @@ export const Exercise = ({ exercise }: { exercise: IExercise }) => {
 								</Cell>
 								<Cell className='w-1/3 h-10'>
 									<Input
-										inputmode='numeric'
+										inputMode='numeric'
 										className='w-full'
 										name={`${exercise.title?.toLowerCase()}.${weightCol.key}`}
 										value={weightCol.value(set)}
