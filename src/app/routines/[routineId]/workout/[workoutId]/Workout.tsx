@@ -11,12 +11,12 @@ import { Input } from '../../../../components/Input';
 export interface WodProps {
 	exercises: Array<any>;
 	routineId: string;
-	dayOfWeek: number;
+	workoutId: string;
 }
 
-export const Workout = ({ routineId, dayOfWeek, exercises }: WodProps) => {
+export const Workout = ({ routineId, workoutId, exercises }: WodProps) => {
 	const [state, formAction] = useFormState(
-		(prevState: any, formData: FormData) => updateWorkout(routineId, dayOfWeek, formData),
+		(prevState: any, formData: FormData) => updateWorkout(routineId, workoutId, formData),
 		{ message: null }
 	);
 

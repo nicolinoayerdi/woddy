@@ -120,3 +120,12 @@ export async function deleteWorkout({ workoutId }: { workoutId: string }) {
 		console.error(e);
 	}
 }
+
+export async function getAllWorkouts() {
+	const client = await clientPromise;
+	const db = client.db('woddy');
+
+	const workouts = await db.collection('workouts').find({}).toArray();
+
+	return workouts;
+}

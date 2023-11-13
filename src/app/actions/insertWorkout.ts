@@ -25,8 +25,8 @@ interface WorkoutDto {
 	exercises: Array<ExerciseDto>;
 }
 
-export async function updateWorkout(routineId: string, workoutId: number, formData: FormData) {
-	let w: WorkoutDto | null | undefined = await fetchWorkout({ routineId, dayOfWeek: workoutId });
+export async function updateWorkout(routineId: string, workoutId: string, formData: FormData) {
+	let w: WorkoutDto | null | undefined = await fetchWorkout({ routineId, workoutId });
 
 	if (w) {
 		const previous = { exercises: w.exercises, workoutId: w.id, duration: w.duration };
@@ -47,8 +47,7 @@ export async function updateWorkout(routineId: string, workoutId: number, formDa
 
 		await editWorkout({ routineId, workoutId, workout: { exercises, duration }, previous });
 		revalidatePath('/');
-		redirect(`${w.dayOfWeek}/success`, RedirectType.push);
-		return { message: 'updated workout ' };
+		redirect(`${workoutId}/success`, RedirectType.push);
 	}
 
 	return { message: 'workout does not exists' };

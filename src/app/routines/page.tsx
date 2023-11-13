@@ -11,15 +11,6 @@ export default async function RoutinesPage() {
 		return `${dayjs(init).format('DD/MM/YYYY')} - ${dayjs(end).format('DD/MM/YYYY')}`;
 	};
 
-	{
-		/* <Link key={routine._id.toString()} href={`routines/${routine._id}`}>
-					<div className='flex flex-row justify-between items-center gap-4'>
-						<div>
-							<b>{routine.title || 'Untitled'}</b>
-						</div>
-					</div>
-				</Link> */
-	}
 	return (
 		<div className='flex flex-col gap-2'>
 			{routines?.map(routine => (
@@ -27,7 +18,7 @@ export default async function RoutinesPage() {
 					routineId={routine._id.toString()}
 					key={routine._id.toString()}
 					title={routine.title || 'Untitled'}
-					content='Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed ac turpis a nulla luctus tincidunt. Quisque vel augue id nulla congue fringilla. Nulla nec eros quam. Aenean in luctus justo.'
+					content='Description'
 					link={{ url: `routines/${routine._id}`, label: 'Workouts' }}
 				/>
 			))}

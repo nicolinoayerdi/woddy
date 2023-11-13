@@ -13,7 +13,7 @@ export default async function WodPage({ params }: { params: { routineId: string;
 					{dayjs().day(wod.dayOfWeek).format('ddd')} workout
 				</div>
 
-				<Workout routineId={routineId} dayOfWeek={wod.dayOfWeek} exercises={wod.exercises}></Workout>
+				<Workout routineId={routineId} workoutId={workoutId} exercises={wod.exercises}></Workout>
 			</div>
 		)
 	);
