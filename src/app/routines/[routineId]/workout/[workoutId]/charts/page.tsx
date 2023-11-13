@@ -1,7 +1,6 @@
 import { getChartData } from '@/app/api/charts/charts';
 import PageContent from './PageContent';
 import { getExercises } from '@/app/api/exercises/exercises';
-import { deleteAll } from '@/app/api/workouts/workoutHistory';
 
 function getRandomHexColor() {
 	// Generate a random hex color code
@@ -12,10 +11,10 @@ function getRandomHexColor() {
 }
 
 export default async function ChartsPage({ params, searchParams }: any) {
-	const { workoutId } = params;
+	const { routineId, workoutId } = params;
 	const { exercise: exerciseName } = searchParams;
 
-	const exercises = await getExercises();
+	const exercises = await getExercises({ routineId, workoutId });
 
 	const data = exerciseName ? await getChartData({ workoutId, exerciseName, attribute: 'weight' }) : null;
 

@@ -42,7 +42,7 @@ export const WorkoutSummary = ({ id, dayOfWeek, exercises, editedAt, href }: Wor
 				<div className='mt-4 flex flex-row w-full gap-2'>
 					<Link className='w-full' href={href}>
 						<Button className='w-full' type='button' kind='secondary'>
-							Edit
+							Complete
 						</Button>
 					</Link>
 

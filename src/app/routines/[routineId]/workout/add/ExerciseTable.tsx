@@ -72,6 +72,8 @@ export const Table = ({ exerciseKey }: NewExercise) => {
 		[setSets]
 	);
 
+	useEffect(() => console.log(sets), [sets]);
+
 	const [_, setCol, weightCol, repsCol] = columns;
 
 	return (

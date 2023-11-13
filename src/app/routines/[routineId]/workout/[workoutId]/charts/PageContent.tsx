@@ -21,7 +21,7 @@ const Select = ({ exercises }: any) => {
 
 			router.push(`${pathname}${query}`);
 		}
-	}, [exercise]);
+	}, [exercise, exercises, pathname, router]);
 
 	return (
 		<Card>
@@ -51,7 +51,9 @@ export default function PageContent({ exercises, chartData, chartLines }: any) {
 	return (
 		<div className='mb-6 w-full h-full'>
 			<Select exercises={exercises}></Select>
-			{chartData && chartLines && (
+			{!chartData || !chartLines ? (
+				<div>No data</div>
+			) : (
 				<div className='w-full h-full'>
 					<Chart data={chartData} lines={chartLines}></Chart>
 				</div>

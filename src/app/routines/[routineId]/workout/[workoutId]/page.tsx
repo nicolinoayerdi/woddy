@@ -6,6 +6,8 @@ export default async function WodPage({ params }: { params: { routineId: string;
 	const { routineId, workoutId } = params;
 	const wod = await fetchWorkout({ routineId, workoutId });
 
+	console.log(JSON.stringify(wod));
+
 	return (
 		wod && (
 			<div className='flex flex-col'>

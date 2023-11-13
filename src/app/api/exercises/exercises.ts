@@ -1,19 +1,10 @@
-import { getAllWorkouts } from '../workouts/workouts';
+import { fetchWorkout, getAllWorkouts } from '../workouts/workouts';
 
-export async function getExercises() {
-	const workouts = await getAllWorkouts();
+export async function getExercises({ routineId, workoutId }: { routineId: string; workoutId: string }) {
+	const { exercises } = await fetchWorkout({ routineId, workoutId });
 
-	const flattened = workouts
-		.reduce(
-			(previousValue: any, { exercises }: any) => [
-				...previousValue,
-				...exercises.map((e: any) => ({ title: e.title })),
-			],
-			[]
-		)
-		.map(e => e.title);
+	const flattened = exercises.map(({ title }: { title: string }) => title);
 
 	const withoutRepeated = Array.from(new Set(flattened));
 	return withoutRepeated;
-	return ['empujes'];
 }

@@ -28,7 +28,7 @@ export const Row = ({ set, onDelete, onUpdateReps, onUpdateWeight, isNewRow: isN
 	const [shouldRender, setShouldRender] = useState(true);
 	const [isNewRow, setIsNewRow] = useState(isNewRowProp);
 
-	const [_, weightCol, setCol, repsCol] = columns;
+	const [_, setCol, weightCol, repsCol] = columns;
 
 	useEffect(() => {
 		if (!shouldRender) {

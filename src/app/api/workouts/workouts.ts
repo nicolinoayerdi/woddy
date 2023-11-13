@@ -4,7 +4,6 @@ import { ObjectId } from 'mongodb';
 
 export async function fetchWorkout({ routineId, workoutId }: { routineId: string; workoutId: string }): Promise<any> {
 	try {
-		console.log('fetch workout', routineId, workoutId);
 		const client = await clientPromise;
 		const db = client.db('woddy');
 
