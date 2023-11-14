@@ -1,8 +1,11 @@
 'use client';
 
 import React, { useState, useEffect, useRef, Ref, ButtonHTMLAttributes, LegacyRef, DetailedHTMLProps } from 'react';
+import Image from 'next/image';
+import logo from 'public/woddy.svg';
+import { signOut, useSession } from 'next-auth/react';
 
-const ThreeDotsButton = ({ options }: { options: Array<{ label: string; onClick: () => void }> }) => {
+function UserImage({ image, signOut }: { image: string; signOut: () => void }) {
 	const [isOpen, setIsOpen] = useState(false);
 	const buttonRef = useRef(null);
 
@@ -31,12 +34,13 @@ const ThreeDotsButton = ({ options }: { options: Array<{ label: string; onClick:
 	return (
 		<div className='relative inline-block text-left' ref={buttonRef}>
 			<div>
-				<button
-					type='button'
-					className='inline-flex items-center justify-center p-2 rounded-full hover:bg-gray-100 focus:outline-none focus:ring focus:ring-gray-300 focus:ring-opacity-50'
-					onClick={toggleMenu}>
-					<div className='font-black'>&#xFE19;</div>
-				</button>
+				<Image
+					onClick={toggleMenu}
+					src={image}
+					width={10}
+					height={10}
+					alt='user-photo'
+					className='w-10 h-10 rounded-full cursor-pointer'></Image>
 			</div>
 
 			{isOpen && (
@@ -45,21 +49,36 @@ const ThreeDotsButton = ({ options }: { options: Array<{ label: string; onClick:
 					role='menu'
 					aria-orientation='vertical'>
 					<div className='py-1' role='none'>
-						{options.map((option, index) => (
-							<button
-								key={index}
-								className='w-full text-start block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100'
-								onClick={option.onClick}
-								type='button'
-								role='menuitem'>
-								{option.label}
-							</button>
-						))}
+						<button
+							className='w-full text-start block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100'
+							onClick={signOut}
+							type='button'
+							role='menuitem'>
+							Logout
+						</button>
 					</div>
 				</div>
 			)}
 		</div>
 	);
-};
+}
 
-export default ThreeDotsButton;
+export function NavBar() {
+	const { data: session } = useSession();
+
+	return (
+		<nav className='my-3 flex justify-between '>
+			<Image src={logo} alt='woddy-logo'></Image>
+			{session?.user ? (
+				<div className='flex justify-end items-center gap-4'>
+					<a href='/'>Home</a>
+					<a href={`/routines`}>Routines</a>
+					<a href='/charts'>Charts</a>
+					<UserImage
+						image={session.user.image as string}
+						signOut={() => signOut({ callbackUrl: '/' })}></UserImage>
+				</div>
+			) : null}
+		</nav>
+	);
+}
