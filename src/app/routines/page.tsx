@@ -4,13 +4,15 @@ import dayjs from 'dayjs';
 import { Button } from '../components/Button';
 import { RoutineCard } from './RoutineCard';
 import { Spinner } from '../components/Spinner';
+import { NextAuthOptions, getServerSession } from 'next-auth';
+import { auth } from '../api/auth/auth';
 
 export default async function RoutinesPage() {
 	const routines = await fetchRoutines();
 
-	const getDateRange = (init: string, end: string) => {
+	/* const getDateRange = (init: string, end: string) => {
 		return `${dayjs(init).format('DD/MM/YYYY')} - ${dayjs(end).format('DD/MM/YYYY')}`;
-	};
+	}; */
 
 	return (
 		<div className='flex flex-col gap-2'>

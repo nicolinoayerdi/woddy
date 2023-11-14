@@ -2,9 +2,12 @@ import { WorkoutDto } from '@/app/types';
 import clientPromise from '../../../lib/mongodb';
 import { ObjectId } from 'mongodb';
 import { isValidObjectId } from '../utils';
+import { auth } from '../auth/auth';
+import { Session } from 'next-auth';
 
 interface RoutineBase {
 	title: String;
+	user?: String;
 	initialDate: Date;
 	validUntil: Date;
 	workouts?: Array<WorkoutDto>;
@@ -31,11 +34,21 @@ export async function createRoutine({ routine }: any) {
 }
 
 export async function fetchRoutines() {
+	const session: Session | null = await auth();
+
+	if (!session?.user?.email) {
+		throw new Error('unauthorized');
+	}
+
 	try {
 		const client = await clientPromise;
 		const db = client.db('woddy');
 
-		const routines = await db.collection('routines').find({}).sort({ validUntil: -1 }).limit(10).toArray();
+		const routines = await db
+			.collection('routines')
+			.find({ user: session.user.email })
+			.sort({ validUntil: -1 })
+			.toArray();
 		return routines;
 	} catch (e) {
 		console.error(e);
@@ -58,6 +71,12 @@ export async function fetchCurrentRoutine() {
 }
 
 export async function fetchRoutine(routineId: string): Promise<RoutineDto | undefined> {
+	const session: Session | null = await auth();
+
+	if (!session?.user?.email) {
+		throw new Error('unauthorized');
+	}
+
 	if (!isValidObjectId(routineId)) return undefined;
 
 	const objectId = new ObjectId(routineId);
@@ -65,6 +84,10 @@ export async function fetchRoutine(routineId: string): Promise<RoutineDto | unde
 	try {
 		const client = await clientPromise;
 		const db = client.db('woddy');
+
+		const { _id, user, ...rest } = (await db.collection('routines').findOne({ _id: objectId })) as RoutineDocument;
+
+		if (user !== session.user?.email) throw new Error('routine does not belong to user');
 
 		const workouts = (await db.collection('workouts').find({ routineId: objectId }).toArray()).map(
 			({ _id, dayOfWeek, exercises, editedAt, routineId }) => ({
@@ -76,8 +99,6 @@ export async function fetchRoutine(routineId: string): Promise<RoutineDto | unde
 			})
 		);
 
-		const { _id, ...rest } = (await db.collection('routines').findOne({ _id: objectId })) as RoutineDocument;
-
 		const routine = { id: _id.toString(), ...rest };
 
 		return { ...routine, workouts };
@@ -87,12 +108,19 @@ export async function fetchRoutine(routineId: string): Promise<RoutineDto | unde
 }
 
 export async function deleteRoutine({ routineId }: { routineId: string }) {
+	const session: Session | null = await auth();
+
+	if (!session?.user?.email) {
+		throw new Error('unauthorized');
+	}
+
 	try {
 		const client = await clientPromise;
 		const db = client.db('woddy');
 
-		const result = await db.collection('routines').deleteOne({ _id: new ObjectId(routineId) });
-		console.log({ result });
+		const result = await db
+			.collection('routines')
+			.deleteOne({ _id: new ObjectId(routineId), user: session.user.email });
 		return result;
 	} catch (e) {
 		console.error(e);

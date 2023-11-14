@@ -1,40 +1,48 @@
+import { fetchRoutine } from '@/app/api/routines/routines';
 import { revalidatePath } from 'next/cache';
 import clientPromise from '../../../lib/mongodb';
 import { ObjectId } from 'mongodb';
+import { auth } from '../auth/auth';
+import { Session } from 'next-auth';
 
 export async function fetchWorkout({ routineId, workoutId }: { routineId: string; workoutId: string }): Promise<any> {
+	const session: Session | null = await auth();
+
 	try {
 		const client = await clientPromise;
 		const db = client.db('woddy');
 
+		const routine = await db.collection('routines').findOne({ _id: new ObjectId(routineId) });
 		const workout = await db.collection('workouts').findOne({ _id: new ObjectId(workoutId) });
 
-		const [lastLog] = await db
-			.collection('workouts_history')
-			.find({ workoutId: workout?._id.toString() })
-			.sort({ editedAt: -1 })
-			.limit(1)
-			.toArray();
+		if (workout && workout.routineId.equals(routine?._id) && routine && routine.user === session?.user?.email) {
+			const [lastLog] = await db
+				.collection('workouts_history')
+				.find({ workoutId: workout?._id.toString() })
+				.sort({ editedAt: -1 })
+				.limit(1)
+				.toArray();
 
-		if (workout) {
-			// map ObjectId so it can be sent from server to client component.
-			const { _id, exercises, ...rest } = workout;
+			if (workout) {
+				// map ObjectId so it can be sent from server to client component.
+				const { _id, exercises, ...rest } = workout;
 
-			const getPrevious = (exerciseIndex: number, setIndex: number) =>
-				lastLog ? lastLog.exercises[exerciseIndex]?.sets[setIndex]?.weight : 0;
+				const getPrevious = (exerciseIndex: number, setIndex: number) =>
+					lastLog ? lastLog.exercises[exerciseIndex]?.sets[setIndex]?.weight : 0;
 
-			const mappedExercises = exercises.map((e: any, exerciseIndex: number) => {
-				const mappedSets = e.sets.map(
-					(s: { order: number; weight: number; repetitions: number }, setIndex: number) => ({
-						...s,
-						previous: getPrevious(exerciseIndex, setIndex),
-					})
-				);
+				const mappedExercises = exercises.map((e: any, exerciseIndex: number) => {
+					const mappedSets = e.sets.map(
+						(s: { order: number; weight: number; repetitions: number }, setIndex: number) => ({
+							...s,
+							previous: getPrevious(exerciseIndex, setIndex),
+						})
+					);
 
-				return { ...e, id: e.id?.toString(), sets: mappedSets };
-			});
+					return { ...e, id: e.id?.toString(), sets: mappedSets };
+				});
 
-			return { ...rest, id: _id.toString(), exercises: mappedExercises };
+				return { ...rest, id: _id.toString(), exercises: mappedExercises };
+			}
 		}
 		return null;
 	} catch (e) {

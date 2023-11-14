@@ -4,6 +4,8 @@ import { revalidatePath } from 'next/cache';
 import { ObjectId } from 'mongodb';
 import { createRoutine as apiCreateRoutine } from '../api/routines/routines';
 import dayjs from 'dayjs';
+import { auth } from '../api/auth/auth';
+import { DefaultUser, Session } from 'next-auth';
 
 interface RoutineDto {
 	title: string;
@@ -22,8 +24,12 @@ export async function createRoutine(prevState: any, formData: FormData) {
 		return { message: 'Missing values' };
 	}
 
+	const session: Session | null = await auth();
+	const email = session?.user?.email;
+
 	const routine = {
 		title: formData.get('title')?.toString() || 'Untitled',
+		user: email,
 		initialDate: formData.get('initial-date')
 			? dayjs(formData.get('initial-date')?.toString()).toDate()
 			: new Date(),
